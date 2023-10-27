@@ -146,7 +146,7 @@ export default {
       let formattedData = "";
       
       items.forEach((item, index) => {
-        formattedData += `Nome: ${item.name}, Quantidade: ${item.quantity}, Valor Total: ${item.value}, Imposto: ${item.tax}, Valor Unitário: ${item.valueUnit}`;
+        formattedData += `Nome: ${item.name}, Quantidade: ${item.quantity}, Imposto: ${this.formatTotal(item.tax)}, Valor Unitário: ${this.formatTotal(item.valueUnit)}, Valor Total: ${this.formatTotal(item.value)}`;
         
         if (index < items.length - 1) {
           formattedData += "<br>";
