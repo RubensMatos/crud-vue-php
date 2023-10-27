@@ -20,7 +20,9 @@ To access the API, go to /php-7.4.0/api
 
 ## Project extra
 ```
-Running the project will prompt you for a username and password. This feature was implemented as an extra step to enhance the project's structure. After importing the database contained in the root file, use the following credentials to access the system:
+Running the project will prompt you for a username and password. 
+This feature was implemented as an extra step to enhance the project's structure. 
+After importing the database contained in the root file, use the following credentials to access the system:
 
 Username: master
 Password: 123456
