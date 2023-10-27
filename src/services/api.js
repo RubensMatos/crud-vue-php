@@ -34,9 +34,6 @@ export default {
   deleteProduct(id) {
     return api.delete('/product.php', {data: id});
   },
-  listComboProductType() {
-    return api.get('/combo.php?productType=1');
-  },
   addOrder(formData) {
     return api.post('/order.php', formData);
   },
@@ -45,5 +42,11 @@ export default {
   },
   deleteOrder(id) {
     return api.delete('/order.php', {data: id});
+  },
+  listComboProductType() {
+    return api.get('/combo.php?productType=1');
+  },
+  listComboProduct() {
+    return api.get('/combo.php?product=1');
   },
 };

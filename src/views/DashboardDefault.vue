@@ -1,6 +1,5 @@
 <template>
   <HeaderComponent></HeaderComponent>
-  
   <div class="card  mt-3">
     <div class="card-body">
       <h5 class="card-title my-3">Vendas</h5>
@@ -63,39 +62,35 @@
   <div>
     <div class="row mt-3 mb-3">
       <div class="col-sm-3 text-start">
-      <p>Total de produtos: {{ totalQuantity }}</p>
+        <p>Total de produtos: {{ totalQuantity }}</p>
+      </div>
+      <div class="col-sm-3 text-start">
+        <p>Valor total dos produtos: {{ formatTotal(totalProductValue) }}</p>
+      </div>
+      <div class="col-sm-3 text-start">
+        <p>Valor total dos impostos: {{ formatTotal(totalTaxValue) }}</p>
+      </div>
+      <div class="col-sm-3 text-start d-grid gap-1">
+        <button @click="sendOrder" class="btn btn-success">Gerar Pedido</button>  
+      </div>
     </div>
-    <div class="col-sm-3 text-start">
-      <p>Valor total dos produtos: {{ formatTotal(totalProductValue) }}</p>
-    </div>
-    <div class="col-sm-3 text-start">
-      <p>Valor total dos impostos: {{ formatTotal(totalTaxValue) }}</p>
-    </div>
-    <div class="col-sm-3 text-start d-grid gap-1">
-    <button @click="sendOrder" class="btn btn-success">Gerar Pedido</button>  
-    </div>
-  </div>
-   
-
     <table class="table mt-5">
-        <thead>
-          <tr>
-            <td colspan="4">HISTÓRICO DE PEDIDOS</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(order, index) in orders" :key="index">
-            <td>{{ order.id }}</td>
-            <td>{{ order.customer }}</td>
-            <td v-html="formatProductData(order.product_data)"></td>
-            <td>
-              <button @click="removeOrder(order.id)" class="btn btn-danger btn-sm"> Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-
+      <thead>
+        <tr>
+          <td colspan="4">HISTÓRICO DE PEDIDOS</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(order, index) in orders" :key="index">
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer }}</td>
+          <td v-html="formatProductData(order.product_data)"></td>
+          <td>
+            <button @click="removeOrder(order.id)" class="btn btn-danger btn-sm"> Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -149,15 +144,15 @@ export default {
     formatProductData(productData) {
       const items = JSON.parse(productData);
       let formattedData = "";
-
+      
       items.forEach((item, index) => {
         formattedData += `Nome: ${item.name}, Quantidade: ${item.quantity}, Valor Total: ${item.value}, Imposto: ${item.tax}, Valor Unitário: ${item.valueUnit}`;
         
         if (index < items.length - 1) {
-          formattedData += "<br>"; // Adicione uma quebra de linha entre os itens
+          formattedData += "<br>";
         }
       });
-
+      
       return formattedData;
     },  
     removeOrder(id) {
@@ -182,76 +177,81 @@ export default {
         }else{    
           this.orders = response.data;
         }
-    } catch (error) {
-      console.error('Erro ao buscar dados da API:', error);
-    }
-  },
-  sendOrder() {
-    api.addOrder(this.products)
-    .then(response => {
-      console.log(response);
-      this.listOrders();
-      toast.info('Pedido gerado com sucesso!');
-      this.products = [];
-    })
-    .catch(error => {
-      console.error('Falha ao inserir dados na API: ' + error);
-    });
-  },
-  removeProduct(index) {
-    this.products.splice(index, 1);
-  },
-  loadProductOptions() {
-    this.productOptions = [
-    { id: 1, name: "Produto A", value: 10.00, tax: 0.50  },
-    { id: 2, name: "Produto B", value: 20.00, tax: 1.10,  },
-    { id: 3, name: "Produto C", value: 30.00, tax: 1.30 },
-    ];
-  },
-  formatTotal(value) {
-    return formatCurrency(value);
-  },
-  ...mapActions(['performLogout']),
-  redirectToLogin() {
-    const router = useRouter();
-    if (!this.isAuthenticated) {
-      router.push('/login'); // Redirecionar para a página de login se não estiver autenticado
-    }
-  },
-  addProduct() {
-    if (this.newProduct.name && this.newProduct.quantity > 0 && this.newProduct.value > 0) {
-      this.products.push({ ...this.newProduct });
-      this.newProduct.id = "";
-      this.newProduct.name = "";
-      this.newProduct.quantity = 0;
-      this.newProduct.value = 0;
-      this.newProduct.tax = 0;
-    }else{
-      
-      toast.info('Todos os campos são obrigatórios');
-    }
-  },
-  updateValue() {
-    const selectedProduct = this.productOptions.find(
-    (product) => product.name === this.newProduct.name
-    );
-    if (selectedProduct) {
-      
-      if(this.newProduct.quantity == ''){
-        
-        this.newProduct.quantity = 1;
+      } catch (error) {
+        console.error('Erro ao buscar dados da API:', error);
       }
+    },
+    sendOrder() {
+        if(this.products.length > 0){        
+        api.addOrder(this.products)
+        .then(response => {
+          console.log(response);
+          this.listOrders();
+          toast.info('Pedido gerado com sucesso!');
+          this.products = [];
+        })
+        .catch(error => {
+          console.error('Falha ao inserir dados na API: ' + error);
+        });
+      }else{
+
+        toast.info('Adicione pelo menos 1 item no pedido!');
+      }
+    },
+    removeProduct(index) {
+      this.products.splice(index, 1);
+    },
+    loadProductOptions() {
       
-      this.newProduct.valueUnit = selectedProduct.value;
-      this.newProduct.value = (this.newProduct.quantity * selectedProduct.value);
-      this.newProduct.tax = (((this.newProduct.quantity * selectedProduct.value) * selectedProduct.tax)/100);
-    }
+      api.listComboProduct().then(response => {
+        
+        this.productOptions = response.data;
+      });
+    },
+    formatTotal(value) {
+      return formatCurrency(value);
+    },
+    ...mapActions(['performLogout']),
+    redirectToLogin() {
+      const router = useRouter();
+      if (!this.isAuthenticated) {
+        router.push('/login');
+      }
+    },
+    addProduct() {
+      if (this.newProduct.name && this.newProduct.quantity > 0 && this.newProduct.value > 0) {
+        this.products.push({ ...this.newProduct });
+        this.newProduct.id = "";
+        this.newProduct.name = "";
+        this.newProduct.quantity = 0;
+        this.newProduct.value = 0;
+        this.newProduct.tax = 0;
+      }else{
+        
+        toast.info('Todos os campos são obrigatórios');
+      }
+    },
+    updateValue() {
+      const selectedProduct = this.productOptions.find(
+      (product) => product.name === this.newProduct.name
+      );
+      if (selectedProduct) {
+        
+        if(this.newProduct.quantity == ''){
+          
+          this.newProduct.quantity = 1;
+        }
+        
+        this.newProduct.valueUnit = selectedProduct.value;
+        this.newProduct.value = (this.newProduct.quantity * selectedProduct.value);
+        this.newProduct.tax = (((this.newProduct.quantity * selectedProduct.value) * selectedProduct.tax)/100);
+      }
+    },
   },
-},
-created() {
-  this.redirectToLogin();
-},
-name: 'DashboadDefault',
+  created() {
+    this.redirectToLogin();
+  },
+  name: 'DashboadDefault',
 }
 
 </script>

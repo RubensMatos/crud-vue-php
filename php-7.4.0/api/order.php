@@ -41,19 +41,29 @@ if ($method === "POST") {
 
 	if ($db) {
 
+		$requestBody = file_get_contents("php://input");
+
+		$postData = json_decode($requestBody, true);
+
+		/* print_r($postData);
+
 		$products = [
 			['Produto A', 4, 40, 0.2, 10],
 			['Produto B', 5, 100, 1.1, 20]
 		];
 
+		print_r($products);
+
+		exit(); */
+
 		$productData = [];
 
-		foreach ($products as $product) {
-			$name = $product[0];
-			$quantity = (int) $product[1];
-			$value = (float) $product[2];
-			$tax = (float) $product[3];
-			$valueUnit = (float) $product[4];
+		foreach ($postData as $product) {
+			$name = $product['name'];
+			$quantity = (int) $product['quantity'];
+			$value = (float) $product['value'];
+			$tax = (float) $product['tax'];
+			$valueUnit = (float) $product['valueUnit'];
 
 			$productData[] = [
 				'name' => $name,
