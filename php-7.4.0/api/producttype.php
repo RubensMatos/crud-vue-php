@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -8,9 +8,9 @@ header("Content-Type: application/json; charset=UTF-8");
 $method = $_SERVER["REQUEST_METHOD"];
 
 if ($method == 'OPTIONS') {
-
-	header("HTTP/1.1 200 OK");
-	exit();
+    // Handle preflight OPTIONS request
+    header("HTTP/1.1 200 OK");
+    exit();
 }
 
 $response = null;
@@ -18,87 +18,87 @@ $response = null;
 require 'db.php';
 
 if ($method === "GET") {
+    // Handle HTTP GET request
+    $db = new Db();
+    $db->connect();
 
-	$db = new Db();
-	$db->connect();
+    if ($db) {
+        // Construct and execute a SELECT query
+        $query = "SELECT id, name, percentvalue FROM producttype ORDER BY name ASC";
+        $result = $db->query($query);
 
-	if ($db) {
+        $data = pg_fetch_all($result);
 
-		$query = "SELECT id, name, percentvalue FROM producttype ORDER BY name ASC";
+        if ($data) {
+            // Convert 'percentvalue' to a float
+            foreach ($data as &$row) {
+                $row['percentvalue'] = floatval($row['percentvalue']);
+            }
+        }
 
-		$result = $db->query($query);
-
-		$data = pg_fetch_all($result);
-
-		if($data){
-
-			foreach ($data as &$row) {
-				
-				$row['percentvalue'] = floatval($row['percentvalue']);
-			}
-		}
-
-		echo json_encode($data);
-	}
+        echo json_encode($data);
+    }
 }
 
 if ($method === "POST") {
+    // Handle HTTP POST request
+    $db = new Db();
+    $db->connect();
 
-	$db = new Db();
-	$db->connect();
+    if ($db) {
+        // Retrieve the request body and decode JSON data
+        $requestBody = file_get_contents("php://input");
+        $postData = json_decode($requestBody, true);
 
-	if ($db) {
+        // Construct and execute an INSERT query
+        $query = "INSERT INTO producttype (name, percentValue) VALUES ($1,$2)";
+        $result = pg_query_params($db->conn, $query, array($postData['name'], $postData['percentvalue']));
 
-		$requestBody = file_get_contents("php://input");
-
-		$postData = json_decode($requestBody, true);
-
-		$query = "INSERT INTO producttype (name, percentValue) VALUES ($1,$2)";
-		$result = pg_query_params($db->conn, $query, array($postData['name'],$postData['percentvalue']));
-
-		if (!$result) {
-			echo "error";
-		}
-	}
+        if (!$result) {
+            echo "error";
+        }
+    }
 }
 
 if ($method === "PUT") {
+    // Handle HTTP PUT request
+    $db = new Db();
+    $db->connect();
 
-	$db = new Db();
-	$db->connect();
+    if ($db) {
+        // Retrieve the request body and decode JSON data
+        $requestBody = file_get_contents("php://input");
+        $postData = json_decode($requestBody, true);
 
-	if ($db) {
+        // Construct parameters for the UPDATE query
+        $params = array($postData['name'], $postData['percentvalue'], $postData['id']);
 
-		$requestBody = file_get_contents("php://input");
+        // Construct and execute an UPDATE query
+        $query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
+        $result = pg_query_params($db->conn, $query, $params);
 
-		$postData = json_decode($requestBody, true);
-
-		$params = array($postData['name'],$postData['percentvalue'],$postData['id']);
-
-		$query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
-		$result = pg_query_params($db->conn, $query, $params);
-
-		if (!$result) {
-			echo "error";
-		}
-	}
+        if (!$result) {
+            echo "error";
+        }
+    }
 }
 
 if ($method === "DELETE") {
+    // Handle HTTP DELETE request
+    $db = new Db();
+    $db->connect();
 
-	$db = new Db();
-	$db->connect();
+    if ($db) {
+        // Retrieve the request body and decode JSON data
+        $requestBody = file_get_contents("php://input");
+        $postData = json_decode($requestBody, true);
 
-	if ($db) {
+        // Construct and execute a DELETE query
+        $result = pg_query($db->conn, "DELETE FROM producttype WHERE id = " . $postData['id']);
 
-		$requestBody = file_get_contents("php://input");
-
-		$postData = json_decode($requestBody, true);
-
-		$result = pg_query($db->conn, "DELETE FROM producttype WHERE id = ".$postData['id']);
-
-		if (!$result) {
-			echo "error";
-		}
-	}
+        if (!$result) {
+            echo "error";
+        }
+    }
 }
+?>
