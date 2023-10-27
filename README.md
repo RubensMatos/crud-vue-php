@@ -1,12 +1,14 @@
 # projeto-workana
 
 ## Database setup
-
+```
 createdb -U postgres workana
+```
 
 ## Php Setup
-
+```
 php -S localhost:8000
+```
 
 ## Project setup
 ```
