@@ -1,0 +1,104 @@
+<?php 
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json; charset=UTF-8");
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+if ($method == 'OPTIONS') {
+
+	header("HTTP/1.1 200 OK");
+	exit();
+}
+
+$response = null;
+
+require 'db.php';
+
+if ($method === "GET") {
+
+	$db = new Db();
+	$db->connect();
+
+	if ($db) {
+
+		$query = "SELECT id, name, percentvalue FROM producttype ORDER BY name ASC";
+
+		$result = $db->query($query);
+
+		$data = pg_fetch_all($result);
+
+		if($data){
+
+			foreach ($data as &$row) {
+				
+				$row['percentvalue'] = floatval($row['percentvalue']);
+			}
+		}
+
+		echo json_encode($data);
+	}
+}
+
+if ($method === "POST") {
+
+	$db = new Db();
+	$db->connect();
+
+	if ($db) {
+
+		$requestBody = file_get_contents("php://input");
+
+		$postData = json_decode($requestBody, true);
+
+		$query = "INSERT INTO producttype (name, percentValue) VALUES ($1,$2)";
+		$result = pg_query_params($db->conn, $query, array($postData['name'],$postData['percentvalue']));
+
+		if (!$result) {
+			echo "error";
+		}
+	}
+}
+
+if ($method === "PUT") {
+
+	$db = new Db();
+	$db->connect();
+
+	if ($db) {
+
+		$requestBody = file_get_contents("php://input");
+
+		$postData = json_decode($requestBody, true);
+
+		$params = array($postData['name'],$postData['percentvalue'],$postData['id']);
+
+		$query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
+		$result = pg_query_params($db->conn, $query, $params);
+
+		if (!$result) {
+			echo "error";
+		}
+	}
+}
+
+if ($method === "DELETE") {
+
+	$db = new Db();
+	$db->connect();
+
+	if ($db) {
+
+		$requestBody = file_get_contents("php://input");
+
+		$postData = json_decode($requestBody, true);
+
+		$result = pg_query($db->conn, "DELETE FROM producttype WHERE id = ".$postData['id']);
+
+		if (!$result) {
+			echo "error";
+		}
+	}
+}
