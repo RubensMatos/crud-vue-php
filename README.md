@@ -7,7 +7,15 @@ createdb -U postgres workana
 
 ## Php Setup
 ```
-php -S localhost:8000
+Folder /php7.4.0
+
+/php7.4.0/php -S localhost:8000
+```
+
+## Php Api
+```
+A simple API was created in PHP without a framework.
+To access the API, go to /php-7.4.0/api.
 ```
 
 ## Project setup
