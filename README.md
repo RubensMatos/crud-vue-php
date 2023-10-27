@@ -50,3 +50,11 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### System Prints
+
+<img src="/prints/print_1.png">
+<img src="/prints/print_2.png">
+<img src="/prints/print_3.png">
+<img src="/prints/print_4.png">
