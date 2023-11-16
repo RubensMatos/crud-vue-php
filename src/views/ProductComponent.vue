@@ -131,8 +131,14 @@ export default {
             .then(response => {
                 this.list();
                 
-                toast.info('Registro excluído com sucesso!');
-                console.log('Registro excluído com sucesso:', response.data);
+                if (response.data.length === 0) {
+                    
+                    toast.info('Registro removido com sucesso!');
+                }else{
+                    
+                    toast.error('Houve uma falha, tente novamente!');
+                }
+                
             })
             .catch(error => {
                 console.error('Erro ao atualizar registro: ' + error);
@@ -144,9 +150,15 @@ export default {
             api.updateProduct(editedItem)
             .then(response => {
                 this.list();
-                console.log('Registro atualizado com sucesso:', response.data);
                 
-                toast.info('Registro atualizado com sucesso!');
+                if (response.data.length === 0) {
+                    
+                    toast.info('Registro atualizado com sucesso!');
+                }else{
+                    
+                    toast.error('Houve uma falha, tente novamente!');
+                }
+                
             })
             .catch(error => {
                 console.error('Erro ao atualizar registro: ' + error);
@@ -184,7 +196,13 @@ export default {
                     console.log(response)
                     this.list();
                     
-                    toast.info('Registro inserido com sucesso!');
+                    if (response.data.length === 0) {
+                        
+                        toast.info('Registro inserido com sucesso!');
+                    }else{
+                        
+                        toast.error('Houve uma falha, tente novamente!');
+                    }
                     
                     this.name   = "";
                     this.amount = "0.00";
