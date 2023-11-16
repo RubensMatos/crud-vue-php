@@ -17,11 +17,13 @@ require_once __DIR__ . '/../models/UserModel.php';
 require_once __DIR__ . '/../models/ProducttypeModel.php';
 require_once __DIR__ . '/../models/ProductModel.php';
 require_once __DIR__ . '/../models/OrderModel.php';
+require_once __DIR__ . '/../models/ComboModel.php';
 
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/ProducttypeController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
 require_once __DIR__ . '/../controllers/OrderController.php';
+require_once __DIR__ . '/../controllers/ComboController.php';
 
 // Crie instâncias de Db, UserModel e AuthController
 $db                    = new Db();
@@ -39,6 +41,10 @@ $productController = new ProductController($productModel);
 // Crie instâncias de OrderModel e OrderController
 $orderModel      = new OrderModel($db);
 $orderController = new OrderController($orderModel);
+
+// Crie instâncias de OrderModel e OrderController
+$comboModel      = new ComboModel($db);
+$comboController = new ComboController($comboModel);
 
 // Roteamento
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -58,6 +64,7 @@ $routes = [
     ['DELETE', '/api/order', [$orderController, 'handle']],
     ['GET', '/api/order', [$orderController, 'handle']],
     ['POST', '/api/order', [$orderController, 'handle']],
+    ['GET', '/api/combo', [$comboController, 'handle']],
 ];
 
 $routeFound = false;
