@@ -35,6 +35,7 @@ $routes = [
     ['POST', '/api/auth', [$authController, 'handle']],
     ['GET', '/api/producttype', [$producttypeController, 'handle']],
     ['POST', '/api/producttype', [$producttypeController, 'handle']],
+    ['PUT', '/api/producttype', [$producttypeController, 'handle']],
     // Adicione mais rotas conforme necessário
 ];
 

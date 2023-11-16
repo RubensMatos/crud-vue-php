@@ -13,7 +13,7 @@ export default {
   },
   updateProductType(formDataEdit) {
     console.log(formDataEdit);
-    return api.put('/producttype.php', formDataEdit);
+    return api.put('/producttype', formDataEdit);
   },
   listProductType() {
     return api.get('/producttype');

@@ -32,7 +32,12 @@ class ProducttypeModel {
         $query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
         $result = $this->db->query($query, array($name, $percentValue, $id));
 
-        return $result ? 'success' : 'error';
+        if ($result) {
+            return 'success';
+        } else {
+            echo "Error: " . pg_last_error($this->db->conn);
+            return 'error';
+        }
     }
 
     public function deleteProductType($id) {
