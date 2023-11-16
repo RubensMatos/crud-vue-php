@@ -24,21 +24,21 @@ class ProducttypeModel {
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 
     public function updateProductType($id, $name, $percentValue) {
-       try {
-        $query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
-        $result = $this->db->query($query, array($name, $percentValue, $id));
+        try {
+            $query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
+            $result = $this->db->query($query, array($name, $percentValue, $id));
 
-        return $result;
+            return $result;
 
-    } catch (Exception $e) {
-        return 'Houve uma falha, tente mais tarde.';
+        } catch (Exception $e) {
+            return 'There was a failure, please try again later.';
+        }
     }
-}
 
     public function deleteProductType($id) {
         try {
@@ -48,7 +48,7 @@ class ProducttypeModel {
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 }

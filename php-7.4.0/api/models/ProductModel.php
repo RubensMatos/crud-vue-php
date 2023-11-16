@@ -35,7 +35,7 @@ class ProductModel {
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 
@@ -47,7 +47,7 @@ class ProductModel {
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 
@@ -59,7 +59,7 @@ class ProductModel {
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 }

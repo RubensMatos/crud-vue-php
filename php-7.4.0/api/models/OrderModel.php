@@ -15,26 +15,26 @@ class OrderModel {
     }
 
     public function addOrder($customer, $productData) {
-        try{
+        try {
             $query = "INSERT INTO \"order\" (customer, product_data) VALUES ($1, $2)";
             $result = $this->db->query($query, [$customer, $productData]);
 
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 
     public function deleteOrder($id) {
-        try{
+        try {
             $query = "DELETE FROM \"order\" WHERE id = $1";
             $result = $this->db->query($query, [$id]);
 
             return $result;
 
         } catch (Exception $e) {
-            return 'Houve uma falha, tente mais tarde.';
+            return 'There was a failure, please try again later.';
         }
     }
 }

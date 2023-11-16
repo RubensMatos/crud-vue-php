@@ -2,7 +2,7 @@
 
 // Handle OPTIONS request (preflight)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Responde com sucesso (200 OK) e encerra a execução
+    // Respond with success (200 OK) and exit execution
     header("HTTP/1.1 200 OK");
     exit();
 }
@@ -21,32 +21,32 @@ require_once __DIR__ . '/../controllers/ProductController.php';
 require_once __DIR__ . '/../controllers/OrderController.php';
 require_once __DIR__ . '/../controllers/ComboController.php';
 
-// Crie instâncias de Db, UserModel e AuthController
+// Create instances of Db, UserModel, and AuthController
 $db                    = new Db();
 $userModel             = new UserModel($db);
 $authController        = new AuthController($userModel);
 
-// Crie instâncias de ProducttypeModel e ProducttypeController
+// Create instances of ProducttypeModel and ProducttypeController
 $producttypeModel      = new ProducttypeModel($db);
 $producttypeController = new ProducttypeController($producttypeModel);
 
-// Crie instâncias de ProductModel e ProductController
+// Create instances of ProductModel and ProductController
 $productModel      = new ProductModel($db);
 $productController = new ProductController($productModel);
 
-// Crie instâncias de OrderModel e OrderController
+// Create instances of OrderModel and OrderController
 $orderModel      = new OrderModel($db);
 $orderController = new OrderController($orderModel);
 
-// Crie instâncias de OrderModel e OrderController
+// Create instances of OrderModel and OrderController
 $comboModel      = new ComboModel($db);
 $comboController = new ComboController($comboModel);
 
-// Roteamento
+// Routing
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Define suas rotas aqui
+// Define your routes here
 $routes = [
     ['POST', '/api/auth', [$authController, 'handle']],
     ['GET', '/api/producttype', [$producttypeController, 'handle']],
@@ -75,7 +75,7 @@ foreach ($routes as $route) {
     }
 }
 
-// Se nenhuma rota for encontrada, retorne um erro 404
+// If no route is found, return a 404 error
 if (!$routeFound) {
     header("HTTP/1.1 404 Not Found");
     echo json_encode(['error' => 'Route not found']);

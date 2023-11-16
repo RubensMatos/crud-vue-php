@@ -31,7 +31,7 @@ class Db {
         $result = pg_query_params($this->conn, $query, $params); // Execute a parameterized query
 
         if ($result === false) {
-            return false; // Retorna false se a consulta falhar
+            return false; // Return false if the query fails
         }
 
         $data = [];
@@ -39,7 +39,7 @@ class Db {
             $data[] = $row;
         }
 
-        return $data; // Retorna os dados como um array associativo
+        return $data; // Return the data as an associative array
     }
 
     public function close() {
