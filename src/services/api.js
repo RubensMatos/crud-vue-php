@@ -6,17 +6,17 @@ const api = axios.create({
 
 export default {
   login(credentials) {
-    return api.post('/auth.php', credentials);
+    return api.post('/auth', credentials);
   },
   addProductType(formData) {
-    return api.post('/producttype.php', formData);
+    return api.post('/producttype', formData);
   },
   updateProductType(formDataEdit) {
     console.log(formDataEdit);
     return api.put('/producttype.php', formDataEdit);
   },
   listProductType() {
-    return api.get('/producttype.php');
+    return api.get('/producttype');
   },
   deleteProductType(id) {
     return api.delete('/producttype.php', {data: id});
