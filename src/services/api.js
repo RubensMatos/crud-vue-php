@@ -22,17 +22,17 @@ export default {
     return api.delete('/producttype', {data: id});
   },
   addProduct(formData) {
-    return api.post('/product.php', formData);
+    return api.post('/product', formData);
   },
   updateProduct(formDataEdit) {
     console.log(formDataEdit);
-    return api.put('/product.php', formDataEdit);
+    return api.put('/product', formDataEdit);
   },
   listProduct() {
-    return api.get('/product.php');
+    return api.get('/product');
   },
   deleteProduct(id) {
-    return api.delete('/product.php', {data: id});
+    return api.delete('/product', {data: id});
   },
   addOrder(formData) {
     return api.post('/order.php', formData);
