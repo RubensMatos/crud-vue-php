@@ -15,16 +15,26 @@ class OrderModel {
     }
 
     public function addOrder($customer, $productData) {
-        $query = "INSERT INTO \"order\" (customer, product_data) VALUES ($1, $2)";
-        $result = $this->db->query($query, [$customer, $productData]);
+        try{
+            $query = "INSERT INTO \"order\" (customer, product_data) VALUES ($1, $2)";
+            $result = $this->db->query($query, [$customer, $productData]);
 
-        return $result ? 'success' : 'error';
+            return $result;
+
+        } catch (Exception $e) {
+            return 'Houve uma falha, tente mais tarde.';
+        }
     }
 
     public function deleteOrder($id) {
-        $query = "DELETE FROM \"order\" WHERE id = $1";
-        $result = $this->db->query($query, [$id]);
+        try{
+            $query = "DELETE FROM \"order\" WHERE id = $1";
+            $result = $this->db->query($query, [$id]);
 
-        return $result ? 'success' : 'error';
+            return $result;
+
+        } catch (Exception $e) {
+            return 'Houve uma falha, tente mais tarde.';
+        }
     }
 }

@@ -166,9 +166,16 @@ export default {
       };
       api.deleteOrder(formDataDel)
       .then(response => {
-        toast.info('Registro excluído com sucesso!');
         this.listOrders();
-        console.log('Registro excluído com sucesso:', response.data);
+
+        if (response.data.length === 0) {
+                    
+                    toast.info('Registro removido com sucesso!');
+                }else{
+                    
+                    toast.error('Houve uma falha, tente novamente!');
+                }
+
       })
       .catch(error => {
         console.error('Erro ao atualizar registro: ' + error);
@@ -192,7 +199,15 @@ export default {
         .then(response => {
           console.log(response);
           this.listOrders();
-          toast.info('Pedido gerado com sucesso!');
+
+          if (response.data.length === 0) {
+                    
+                    toast.info('Pedido gerado com sucesso!');
+                }else{
+                    
+                    toast.error('Houve uma falha, tente novamente!');
+                }
+
           this.products = [];
         })
         .catch(error => {
