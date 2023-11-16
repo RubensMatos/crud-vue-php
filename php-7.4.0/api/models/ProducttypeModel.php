@@ -17,38 +17,38 @@ class ProducttypeModel {
     }
 
     public function addProductType($name, $percentValue) {
-        $query = "INSERT INTO producttype (name, percentValue) VALUES ($1, $2)";
-        $result = $this->db->query($query, array($name, $percentValue));
+        try {
+            $query = "INSERT INTO producttype (name, percentValue) VALUES ($1, $2)";
+            $result = $this->db->query($query, array($name, $percentValue));
 
-        if ($result) {
-            return 'success';
-        } else {
-            echo "Error: " . pg_last_error($this->db->conn);
-            return 'error';
+            return $result;
+
+        } catch (Exception $e) {
+            return 'Houve uma falha, tente mais tarde.';
         }
     }
 
     public function updateProductType($id, $name, $percentValue) {
+       try {
         $query = "UPDATE producttype SET name = $1, percentValue = $2 WHERE id = $3";
         $result = $this->db->query($query, array($name, $percentValue, $id));
 
-        if ($result) {
-            return 'success';
-        } else {
-            echo "Error: " . pg_last_error($this->db->conn);
-            return 'error';
-        }
+        return $result;
+
+    } catch (Exception $e) {
+        return 'Houve uma falha, tente mais tarde.';
     }
+}
 
     public function deleteProductType($id) {
-        $query = "DELETE FROM producttype WHERE id = $1";
-        $result = $this->db->query($query, array($id));
+        try {
+            $query = "DELETE FROM producttype WHERE id = $1";
+            $result = $this->db->query($query, array($id));
 
-        if ($result) {
-            return 'success';
-        } else {
-            echo "Error: " . pg_last_error($this->db->conn);
-            return 'error';
+            return $result;
+
+        } catch (Exception $e) {
+            return 'Houve uma falha, tente mais tarde.';
         }
     }
 }

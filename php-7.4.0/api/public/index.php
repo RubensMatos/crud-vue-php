@@ -1,9 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Handle OPTIONS request (preflight)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Responde com sucesso (200 OK) e encerra a execução
