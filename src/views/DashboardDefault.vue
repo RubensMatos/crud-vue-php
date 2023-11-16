@@ -145,13 +145,18 @@ export default {
       const items = JSON.parse(productData);
       let formattedData = "";
       
-      items.forEach((item, index) => {
-        formattedData += `Nome: ${item.name}, Quantidade: ${item.quantity}, Imposto: ${this.formatTotal(item.tax)}, Valor Unitário: ${this.formatTotal(item.valueUnit)}, Valor Total: ${this.formatTotal(item.value)}`;
+      if (items && Array.isArray(items)) {
+        items.forEach((item, index) => {
+          formattedData += `Nome: ${item.name}, Quantidade: ${item.quantity}, Imposto: ${this.formatTotal(item.tax)}, Valor Unitário: ${this.formatTotal(item.valueUnit)}, Valor Total: ${this.formatTotal(item.value)}`;
+          
+          if (index < items.length - 1) {
+            formattedData += "<br>";
+          }
+        });
+      } else {
         
-        if (index < items.length - 1) {
-          formattedData += "<br>";
-        }
-      });
+        formattedData = "Nenhum item disponível";
+      }
       
       return formattedData;
     },  
@@ -182,7 +187,7 @@ export default {
       }
     },
     sendOrder() {
-        if(this.products.length > 0){        
+      if(this.products.length > 0){        
         api.addOrder(this.products)
         .then(response => {
           console.log(response);
@@ -194,7 +199,7 @@ export default {
           console.error('Falha ao inserir dados na API: ' + error);
         });
       }else{
-
+        
         toast.info('Adicione pelo menos 1 item no pedido!');
       }
     },

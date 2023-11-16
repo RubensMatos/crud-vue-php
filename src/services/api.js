@@ -35,13 +35,13 @@ export default {
     return api.delete('/product', {data: id});
   },
   addOrder(formData) {
-    return api.post('/order.php', formData);
+    return api.post('/order', formData);
   },
   listOrder() {
-    return api.get('/order.php');
+    return api.get('/order');
   },
   deleteOrder(id) {
-    return api.delete('/order.php', {data: id});
+    return api.delete('/order', {data: id});
   },
   listComboProductType() {
     return api.get('/combo.php?productType=1');

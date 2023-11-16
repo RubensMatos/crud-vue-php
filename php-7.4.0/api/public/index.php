@@ -12,12 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../models/Db.php';
+
 require_once __DIR__ . '/../models/UserModel.php';
 require_once __DIR__ . '/../models/ProducttypeModel.php';
 require_once __DIR__ . '/../models/ProductModel.php';
+require_once __DIR__ . '/../models/OrderModel.php';
+
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/ProducttypeController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
+require_once __DIR__ . '/../controllers/OrderController.php';
 
 // Crie instâncias de Db, UserModel e AuthController
 $db                    = new Db();
@@ -31,6 +35,10 @@ $producttypeController = new ProducttypeController($producttypeModel);
 // Crie instâncias de ProductModel e ProductController
 $productModel      = new ProductModel($db);
 $productController = new ProductController($productModel);
+
+// Crie instâncias de OrderModel e OrderController
+$orderModel      = new OrderModel($db);
+$orderController = new OrderController($orderModel);
 
 // Roteamento
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -47,6 +55,9 @@ $routes = [
     ['POST', '/api/product', [$productController, 'handle']],
     ['PUT', '/api/product', [$productController, 'handle']],
     ['DELETE', '/api/product', [$productController, 'handle']],
+    ['DELETE', '/api/order', [$orderController, 'handle']],
+    ['GET', '/api/order', [$orderController, 'handle']],
+    ['POST', '/api/order', [$orderController, 'handle']],
 ];
 
 $routeFound = false;
