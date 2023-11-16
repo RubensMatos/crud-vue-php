@@ -44,6 +44,11 @@ class ProducttypeModel {
         $query = "DELETE FROM producttype WHERE id = $1";
         $result = $this->db->query($query, array($id));
 
-        return $result ? 'success' : 'error';
+        if ($result) {
+            return 'success';
+        } else {
+            echo "Error: " . pg_last_error($this->db->conn);
+            return 'error';
+        }
     }
 }

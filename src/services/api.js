@@ -19,7 +19,7 @@ export default {
     return api.get('/producttype');
   },
   deleteProductType(id) {
-    return api.delete('/producttype.php', {data: id});
+    return api.delete('/producttype', {data: id});
   },
   addProduct(formData) {
     return api.post('/product.php', formData);
